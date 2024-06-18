@@ -2,8 +2,8 @@ public class Task {
     private String description;
     private boolean isComplete;
 
-    public Task(String desctiption) {
-        this.description = description;
+    public Task(String description) {
+        this.description = description;  // Corrected spelling mistake
         this.isComplete = false;
     }
 
@@ -24,3 +24,4 @@ public class Task {
         return description + " [" + (isComplete ? "Completed" : "Pending") + "]";
     }
 }
+
