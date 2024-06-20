@@ -1,79 +1,57 @@
-public class TaskList {
-    private TaskNode head;
-    private TaskNode tail;
-    private int size;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    public TaskNode createLinkedList(Task task) {
-        head = new TaskNode(task);
-        tail = head;
-        size = 1;
-        return head;
-    }
+public class TaskList implements Serializable {
+    private class Node implements Serializable {
+        Task task;
+        Node next;
 
-    public void insertTask(Task task) {
-        TaskNode node = new TaskNode(task);
-        if (head == null) {
-            createLinkedList(task);
-        } else {
-            tail.next = node;
-            tail = node;
+        Node(Task task) {
+            this.task = task;
+            this.next = null;
         }
-        size++;
     }
 
-    public void traverseTaskList() {
+    private Node head;
+
+    public TaskList() {
+        head = null;
+    }
+
+    public void addTask(String description) {
+        Task newTask = new Task(description);
+        Node newNode = new Node(newTask);
         if (head == null) {
-            System.out.println("Task list doesn't exist");
+            head = newNode;
         } else {
-            TaskNode tempNode = head;
-            while (tempNode != null) {
-                System.out.println(tempNode.task);
-                tempNode = tempNode.next;
+            Node current = head;
+            while (current != null) {
+                current = current.next;
             }
+            current.next = newNode;
         }
     }
 
-    public void markTaskAsComplete(int index) {
-        if (head == null) {
-            System.out.println("Task list doesn't exist");
-            return;
-        }
-        TaskNode tempNode = head;
-        for (int i = 0; i < index; i++) {
-            if (tempNode.next == null) {
-                System.out.println("Task couldn't be found at index " + index);
+    public void markAsComplete(int index) {
+        Node current = head;
+        int count = 0;
+        while (current != null) {
+            if (count == index) {
+                current.task.markAsComplete();
                 return;
             }
-            tempNode = tempNode.next;
+            count++;
+            current = current.next;
         }
-        tempNode.task.markAsComplete();
     }
 
-    public void deleteTask(int location) {
-        if (head == null) {
-            System.out.println("Task list doesn't exist");
-            return;
-        }
-        if (location == 0) {
-            head = head.next;
-            size--;
-            if (size == 0) {
-                tail = null;
-            }
-        } else {
-            TaskNode tempNode = head;
-            for (int i = 0; i < location - 1; i++) {
-                if (tempNode.next == null) {
-                    System.out.println("Task couldn't be found at " + location);
-                    return;
-                }
-                tempNode = tempNode.next;
-            }
-            tempNode.next = tempNode.next.next;
-            if (tempNode.next == null) {
-                tail = tempNode;
-            }
-            size--;
+    public void printTasks() {
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            System.out.println(index + ": " + current.task);
+            index++;
+            current = current.next;
         }
     }
 }
