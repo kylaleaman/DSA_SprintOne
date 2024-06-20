@@ -1,14 +1,16 @@
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     private String description;
     private boolean isComplete;
 
     public Task(String description) {
-        this.description = description;  // Corrected spelling mistake
+        this.description = description;
         this.isComplete = false;
     }
 
     public void markAsComplete() {
-        this.isComplete = true;
+        isComplete = true;
     }
 
     public String getDescription() {
